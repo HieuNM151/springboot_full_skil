@@ -1,0 +1,49 @@
+package vn.hieunm.dto.request;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import vn.hieunm.ultil.EnumPattern;
+import vn.hieunm.ultil.PhoneNumber;
+import vn.hieunm.ultil.UserStatus;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserRequestDTO implements Serializable {
+    @NotBlank(message = "Phải nhập tên vào cho bố")
+    private String firstName;
+
+    @NotBlank(message = "Phải nhập họ và vào cho bố")
+    private String lastName;
+
+    @Email(message = "Email không đúng định dạng")
+    private String email;
+
+    //@Pattern(regexp = "^\\+?[0-9]{10}$", message = "Số điện thoại không đúng định dạng")
+    @PhoneNumber
+    private String phone;
+
+    @NotNull(message = "Phải nhập ngày sinh vào cho bố")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date dateOfBirth;
+
+    @EnumPattern(name = "status", regexp = "ACTIVE|INACTIVE")
+    private UserStatus status;
+
+    @NotNull(message = "Phải nhập tên đăng nhập vào cho bố")
+    private String username;
+
+    @NotNull(message = "Phải nhập mật khẩu vào cho bố")
+    private String password;
+
+//    @NotEmpty
+    private List<String> permissions;
+}
