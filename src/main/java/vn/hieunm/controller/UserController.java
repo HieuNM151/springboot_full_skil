@@ -2,6 +2,7 @@ package vn.hieunm.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.hieunm.dto.request.UserRequestDTO;
 
@@ -12,11 +13,13 @@ import java.util.List;
 public class UserController {
 
     @PostMapping("/")
-    public String addUser(@Valid @RequestBody UserRequestDTO userDTO) {
-        return "User created successfully!";
+    @ResponseStatus(HttpStatus.CREATED)
+    public int addUser(@Valid @RequestBody UserRequestDTO userDTO) {
+        return 1;
     }
 
     @PutMapping("/{userId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public String updateUser(
             @PathVariable int userId,
             @Valid @RequestBody UserRequestDTO userDTO
@@ -26,6 +29,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public String changeStatus(
             @PathVariable int userId,
             @Min(1) @RequestParam(required = false) int status
@@ -35,12 +39,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteUser(@Min (1) @PathVariable int userId) {
         System.out.println("Request delete userId=" + userId);
         return "User deleted";
     }
 
     @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
     public UserRequestDTO getUser(@PathVariable int userId) {
         System.out.println("Request get user detail by userId: " + userId);
 
@@ -53,6 +59,7 @@ public class UserController {
     }
 
     @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
     public List<UserRequestDTO> getAllUsers(
             @RequestParam(defaultValue = "0") int pageNo,
             @RequestParam(defaultValue = "10") int pageSize

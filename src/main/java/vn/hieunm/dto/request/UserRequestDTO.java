@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import vn.hieunm.ultil.EnumPattern;
-import vn.hieunm.ultil.PhoneNumber;
-import vn.hieunm.ultil.UserStatus;
+import vn.hieunm.ultil.*;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
+import static vn.hieunm.ultil.Gender.*;
 
 @Data
 @Builder
@@ -37,6 +37,13 @@ public class UserRequestDTO implements Serializable {
 
     @EnumPattern(name = "status", regexp = "ACTIVE|INACTIVE")
     private UserStatus status;
+
+    @GenderSubset(anyOf = {MALE, FEMALE, OTHER})
+    private Gender gender;
+
+    @NotNull(message = "type must be not null")
+    @EnumValue(name = "type", enumClass = UserType.class)
+    private String type;
 
     @NotNull(message = "Phải nhập tên đăng nhập vào cho bố")
     private String username;
