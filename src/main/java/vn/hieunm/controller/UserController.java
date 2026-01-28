@@ -3,7 +3,9 @@ package vn.hieunm.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.hieunm.configuration.Translator;
 import vn.hieunm.dto.request.UserRequestDTO;
 
 import java.util.List;
@@ -14,8 +16,10 @@ public class UserController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public int addUser(@Valid @RequestBody UserRequestDTO userDTO) {
-        return 1;
+    public ResponseEntity<String> addUser(@Valid @RequestBody UserRequestDTO userDTO) {
+        String message = Translator.toLocale("user.add.successfully");
+
+        return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 
     @PutMapping("/{userId}")
