@@ -1,0 +1,14 @@
+
+server:
+  port: 8080
+spring:
+  config:
+    activate:
+      on-profile: dev
+open:
+  api:
+    title: ${API_TITLE:DUMY-API-TITLE}
+    version: 1.0.0
+    description: API documentation for Hieunm151 Java application
+    serverUrl: http://localhost:${server.port}
+    serverName: server dev

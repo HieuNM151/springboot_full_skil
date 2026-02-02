@@ -1,5 +1,7 @@
 package vn.hieunm.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
@@ -12,9 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@Tag(name = "User Controller")
 public class UserController {
 
-    @PostMapping("/")
+    @Operation(summary = "Add new user", description = "API thêm mới người dùng")
+    @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> addUser(@Valid @RequestBody UserRequestDTO userDTO) {
         String message = Translator.toLocale("user.add.successfully");

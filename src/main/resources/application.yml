@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: hieunm151_java
+  profiles:
+    active: dev

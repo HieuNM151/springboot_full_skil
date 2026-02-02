@@ -1,0 +1,13 @@
+server:
+  port: 8088
+spring:
+  config:
+    activate:
+      on-profile: prod
+open:
+  api:
+    title: Hieunm151 Java API
+    version: 1.0.0
+    description: API documentation for Hieunm151 Java application
+    serverUrl: http://localhost:${server.port}
+    serverName: server prod
