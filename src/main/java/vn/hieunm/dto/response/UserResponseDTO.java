@@ -1,5 +1,14 @@
 package vn.hieunm.dto.response;
 
-public class UserResponseDTO {
+import lombok.Builder;
+import lombok.Getter;
 
+import java.io.Serializable;
+@Getter
+@Builder
+public class UserResponseDTO implements Serializable {
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
 }

@@ -2,6 +2,7 @@ package vn.hieunm.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -9,14 +10,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.util.Date;
+
 @RestControllerAdvice
 public class GolbalExceptionHandler {
+
+    /* ===== 400: VALIDATION ===== */
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(Exception e, WebRequest request) {
-        System.out.println("Handling validation exception: ");
+    public ResponseEntity<ErrorResponse> handleValidationException(
+            Exception e,
+            WebRequest request
+    ) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setTimestamp(new java.util.Date());
+        errorResponse.setTimestamp(new Date());
         errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
         errorResponse.setPath(request.getDescription(false).replace("uri=", ""));
 
@@ -26,25 +32,33 @@ public class GolbalExceptionHandler {
             int end = message.lastIndexOf("]");
             message = message.substring(start + 1, end - 1);
             errorResponse.setError("Payload Invalid");
-        } else if (e instanceof ConstraintViolationException) {
-            message = message.substring(message.indexOf(" ") + 1);
+        } else {
             errorResponse.setError("PathVariable Invalid");
         }
+
         errorResponse.setMessage(message);
-        return errorResponse;
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
     }
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleInternalServerErrorException(Exception e, WebRequest request) {
-        System.out.println("Handling validation exception: ");
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setTimestamp(new java.util.Date());
-        errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        errorResponse.setPath(request.getDescription(false).replace("uri=", ""));
-        if (e instanceof MethodArgumentTypeMismatchException){
-        errorResponse.setError("Internal Server Error");
-        }
-        return errorResponse;
+    /* ===== 500: FALLBACK (🔥 THÊM VÀO) ===== */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(
+            Exception e,
+            WebRequest request
+    ) {
+        ErrorResponse error = new ErrorResponse();
+        error.setTimestamp(new Date());
+        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        error.setError("Internal Server Error");
+        error.setPath(request.getDescription(false).replace("uri=", ""));
+        error.setMessage(e.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(error);
     }
 }
+

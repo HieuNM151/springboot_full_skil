@@ -1,6 +1,7 @@
 package vn.hieunm.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,6 +18,7 @@ import static vn.hieunm.ultil.Gender.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDTO implements Serializable {
+
     @NotBlank(message = "Phải nhập tên vào cho bố")
     private String firstName;
 
@@ -26,7 +28,6 @@ public class UserRequestDTO implements Serializable {
     @Email(message = "Email không đúng định dạng")
     private String email;
 
-    //@Pattern(regexp = "^\\+?[0-9]{10}$", message = "Số điện thoại không đúng định dạng")
     @PhoneNumber
     private String phone;
 
@@ -51,6 +52,11 @@ public class UserRequestDTO implements Serializable {
     @NotNull(message = "Phải nhập mật khẩu vào cho bố")
     private String password;
 
-//    @NotEmpty
     private List<String> permissions;
+
+    /* ===== ADDRESS ===== */
+    @NotEmpty(message = "User phải có ít nhất 1 địa chỉ")
+    @Valid
+    private List<AddressDTO> addresses;
 }
+

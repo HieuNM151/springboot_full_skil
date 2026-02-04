@@ -1,18 +1,52 @@
 version: '3.9'
 
 services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Abc123$%^"
+      MSSQL_PID: "Developer"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - backend
+    restart: always
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+      REDIS_DISABLE_COMMANDS: "FLUSHDB;FLUSHALL"
+    networks:
+      - backend
+    restart: always
+
   api-service:
-    container_name: api-container-1
+    container_name: api-container
     build:
-        context: ./
-        dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - .env
     ports:
       - "8082:8080"
+    depends_on:
+      - sqlserver
+      - redis
     networks:
       - backend
 
 networks:
   backend:
     driver: bridge
+
+volumes:
+  sqlserver_data:
