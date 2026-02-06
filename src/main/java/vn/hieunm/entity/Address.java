@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_address")
-public class Address extends AbtractEntity{
+public class Address extends AbtractEntity<Long>{
 
     @Column(name = "apartment_number")
     private String apartmentNumber;

@@ -5,16 +5,28 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class AbtractEntity {
+public abstract class AbtractEntity<T extends Serializable> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private T id;
+
+    @CreatedBy
+    @Column(name = "create_by")
+    private T createBy;
+
+    @LastModifiedBy
+    @Column(name = "update_by")
+    private T updateBy;
 
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp

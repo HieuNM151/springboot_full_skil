@@ -1,5 +1,6 @@
 package vn.hieunm.service;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import vn.hieunm.dto.request.UserRequestDTO;
 import vn.hieunm.dto.request.UserRequestSearchDTO;
 import vn.hieunm.dto.response.UserDetailResponse;
@@ -9,6 +10,9 @@ import vn.hieunm.ultil.UserType;
 import java.util.List;
 
 public interface UserService {
+
+    UserDetailsService userDetailsService();
+
     long saveUser(UserRequestDTO request);
 
     void updateUser(long userId, UserRequestDTO request);
