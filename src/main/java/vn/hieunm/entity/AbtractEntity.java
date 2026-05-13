@@ -20,21 +20,21 @@ public abstract class AbtractEntity<T extends Serializable> implements Serializa
     @Column(name = "id")
     private T id;
 
-    @CreatedBy
-    @Column(name = "create_by")
-    private T createBy;
-
-    @LastModifiedBy
-    @Column(name = "update_by")
-    private T updateBy;
-
-    @Column(name = "created_at", updatable = false)
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+//    @CreatedBy
+//    @Column(name = "create_by")
+//    private T createBy;
+//
+//    @LastModifiedBy
+//    @Column(name = "update_by")
+//    private T updateBy;
+//
+//    @Column(name = "created_at", updatable = false)
+//    @CreationTimestamp
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date createdAt;
+//
+//    @Column(name = "updated_at")
+//    @UpdateTimestamp
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date updatedAt;
 }

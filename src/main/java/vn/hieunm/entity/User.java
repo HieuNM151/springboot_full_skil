@@ -57,12 +57,7 @@ public class User extends AbtractEntity<Long> implements UserDetails, Serializab
     private UserStatus status;
 
     /* ===== Relationship ===== */
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
-            mappedBy = "user",
-            orphanRemoval = true
-    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     @Builder.Default
     private Set<Address> addresses = new HashSet<>();
 
@@ -90,22 +85,25 @@ public class User extends AbtractEntity<Long> implements UserDetails, Serializab
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return UserStatus.ACTIVE.equals(status);
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+
+        return true;
     }
 }
 
